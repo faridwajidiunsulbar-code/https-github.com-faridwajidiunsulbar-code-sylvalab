@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account and profile data keyed by NIM_NIP",
+      "type": "object",
+      "properties": {
+        "NIM_NIP": { "type": "string" },
+        "uid": { "type": "string" },
+        "nama": { "type": "string" },
+        "role": { "type": "string", "enum": ["PEMINJAM", "PETUGAS_LAB", "SUPER_ADMIN", "KEPALA_UPA_LAB_TERPADU", "KEPALA_LAB_KEHUTANAN", "EDITOR"] },
+        "greenScore": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["NIM_NIP", "uid", "nama", "role", "greenScore"]
+    },
+    "Equipment": {
+      "title": "Equipment/Tool",
+      "description": "Laboratory equipment items available for rent",
+      "type": "object",
+      "properties": {
+        "ID_Alat": { "type": "string" },
+        "namaAlat": { "type": "string" },
+        "kategori": { "type": "string", "enum": ["Laboratorium", "Elektronika", "Pengukuran", "Navigasi", "Umum"] },
+        "stokTotal": { "type": "integer" },
+        "stokTersedia": { "type": "integer" },
+        "urlFoto": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ID_Alat", "namaAlat", "kategori", "stokTotal", "stokTersedia"]
+    },
+    "Transaction": {
+      "title": "Loan Transaction",
+      "description": "Lab equipment loan records and states",
+      "type": "object",
+      "properties": {
+        "ID_Trans": { "type": "string" },
+        "nimPeminjam": { "type": "string" },
+        "namaPeminjam": { "type": "string" },
+        "idAlat": { "type": "string" },
+        "namaAlat": { "type": "string" },
+        "status": { "type": "string", "enum": ["PENDING", "DIPINJAM", "DIKEMBALIKAN", "DITOLAK"] },
+        "tglPinjam": { "type": "string", "format": "date" },
+        "tglKembali": { "type": "string", "format": "date" },
+        "tglKembaliAktual": { "type": "string", "format": "date" },
+        "kondisiKembali": { "type": "string", "enum": ["BAIK", "CUKUP", "RUSAK"] },
+        "poinMendapat": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ID_Trans", "nimPeminjam", "idAlat", "status", "tglPinjam", "tglKembali", "createdAt"]
+    },
+    "Article": {
+      "title": "Jurnal Kanopi Article",
+      "description": "Scientific articles or news posted under the Jurnal Kanopi section",
+      "type": "object",
+      "properties": {
+        "ID_Artikel": { "type": "string" },
+        "judul": { "type": "string" },
+        "tanggalTerbit": { "type": "string", "format": "date" },
+        "kontenTeks": { "type": "string" },
+        "urlCover": { "type": "string" },
+        "author": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ID_Artikel", "judul", "tanggalTerbit", "kontenTeks", "createdAt"]
+    },
+    "Report": {
+      "title": "Lab Report",
+      "description": "Hierarchical lab activity and audit readiness reports",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tipe": { "type": "string", "enum": ["HARIAN", "BULANAN", "TAHUNAN"] },
+        "tanggal": { "type": "string", "format": "date" },
+        "judul": { "type": "string" },
+        "dibuatOleh": { "type": "string" },
+        "lab": { "type": "string" },
+        "status": { "type": "string", "enum": ["DRAFT", "DIAJUKAN_KEPALA_LAB", "DISETUJUI_KEPALA_LAB", "DIVALIDASI_KEPALA_UPA", "DISERAHKAN_REKTORAT"] },
+        "catatan": { "type": "string" },
+        "tanggalDiajukan": { "type": "string", "format": "date" },
+        "tanggalDisetujui": { "type": "string", "format": "date" },
+        "tanggalDivalidasi": { "type": "string", "format": "date" },
+        "tanggalDiserahkan": { "type": "string", "format": "date" },
+        "ringkasanAset": {
+          "type": "object",
+          "properties": {
+            "totalBaik": { "type": "integer" },
+            "totalCukup": { "type": "integer" },
+            "totalRusak": { "type": "integer" }
+          },
+          "required": ["totalBaik", "totalCukup", "totalRusak"]
+        }
+      },
+      "required": ["id", "tipe", "tanggal", "judul", "dibuatOleh", "lab", "status", "ringkasanAset"]
+    }
+  },
+  "firestore": {
+    "/users/{nim_nip}": {
+      "schema": "User",
+      "description": "User directory profiles"
+    },
+    "/equipments/{equipmentId}": {
+      "schema": "Equipment",
+      "description": "Laboratory tools directory"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Rental transaction records"
+    },
+    "/articles/{articleId}": {
+      "schema": "Article",
+      "description": "Published news and journals"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Hierarchical activity reports and audits"
+    }
+  }
+}

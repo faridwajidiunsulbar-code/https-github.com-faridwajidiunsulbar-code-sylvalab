@@ -1,0 +1,6 @@
+{
+  "name": "SylvaLab",
+  "description": "Sistem informasi pengelolaan peminjaman alat laboratorium Kehutanan Unsulbar dengan fitur inventaris otomatis, sistem notifikasi keterlambatan pengembalian, dan gamifikasi Green Score terintegrasi Firebase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
